@@ -1,0 +1,33 @@
+
+version: "2"
+
+services:
+    magento:
+      container_name: magento
+      build: .
+      image: sfoxdev/magento3
+      restart: always
+      ports:
+        - "80:80"
+      volumes:
+        - /srv/magento:/var/www/html-tmp
+      environment:
+        - SERVER_NAME=sfoxdev.com
+        - MAGENTO_ADMINURL=admin
+        - MYSQL_HOST=sfoxdev.com
+        - MYSQL_USER=magento2
+        - MYSQL_PASSWORD=magento2
+        - MYSQL_DATABASE=magento2
+        - MAGENTO_URL=http://sfoxdev.com
+        - MAGENTO_SECUREURL=https://sfoxdev.com
+        - MAGENTO_LOCALE=en_US
+        - MAGENTO_TIMEZONE=Europe/Kiev
+        - MAGENTO_DEFAULT_CURRENCY=UAH
+        - MAGENTO_ADMIN_FIRSTNAME=MyStore
+        - MAGENTO_ADMIN_LASTNAME=Admin
+        - MAGENTO_ADMIN_EMAIL=admin@sfoxdev.com
+        - MAGENTO_ADMIN_USERNAME=admin
+        - MAGENTO_ADMIN_PASSWORD=1q2w3e4r
+        - MAGENTO_USE_REWRITES=0
+        - MAGENTO_SECURE=0
+        - MAGENTO_SECUREADMIN=0
