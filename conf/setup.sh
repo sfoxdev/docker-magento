@@ -77,6 +77,15 @@ php bin/magento2 setup:config:set \
   --db-password=${MYSQL_PASSWORD} \
   --backend-frontname=${MAGENTO_ADMINURL}
 
+mysql -u${MYSQL_USER} -p${MYSQL_PASSWORD} -h${MYSQL_HOST} \
+  -e "USE ${MYSQL_DATABASE}; \
+  INSERT INTO core_config_data SET path='system/smtp/disable', value='${SMTP_DISABLE}'; \
+  INSERT INTO core_config_data SET path='system/smtp/host', value='${SMTP_HOST}'; \
+  INSERT INTO core_config_data SET path='system/smtp/port', value='${SMTP_PORT}'; \
+  INSERT INTO core_config_data SET path='system/smtp/set_return_path', value='${SMTP_SET_RETURN_PATH}'; \
+  INSERT INTO core_config_data SET path='system/smtp/return_path_email', value='${SMTP_RETURN_PATH_EMAIL}'; \
+  "
+
 #php bin/magento2 deploy:mode:set developer
 
 echo "=============================== Clear cache ==============================="

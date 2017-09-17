@@ -30,3 +30,8 @@ services:
         - MAGENTO_ADMIN_EMAIL=admin@sfoxdev.com
         - MAGENTO_ADMIN_USERNAME=admin
         - MAGENTO_ADMIN_PASSWORD=1qaz2wsx
+        - SMTP_DISABLE=0
+        - SMTP_HOST=smtp.sfoxdev.com
+        - SMTP_PORT=25
+        - SMTP_SET_RETURN_PATH=0
+        - SMTP_RETURN_PATH_EMAIL=admin@sfoxdev.com
