@@ -21,21 +21,12 @@ chmod -R 777 /var/www/html/pub/
 chmod 755 /var/www/html/bin/magento
 chown -R www-data:www-data /var/www/html/
 
-echo "=============================== Configuring Magento ==============================="
-cp /root/env.php /var/www/html-tmp/app/etc/env.php
-
-sed -i "s/MAGENTO_ADMINURL/${MAGENTO_ADMINURL}/g" /var/www/html-tmp/app/etc/env.php
-sed -i "s/MYSQL_HOST/${MYSQL_HOST}/g" /var/www/html-tmp/app/etc/env.php
-sed -i "s/MYSQL_DATABASE/${MYSQL_DATABASE}/g" /var/www/html-tmp/app/etc/env.php
-sed -i "s/MYSQL_USER/${MYSQL_USER}/g" /var/www/html-tmp/app/etc/env.php
-sed -i "s/MYSQL_PASSWORD/${MYSQL_PASSWORD}/g" /var/www/html-tmp/app/etc/env.php
-sed -i "s/SERVER_NAME/${SERVER_NAME}/g" /etc/apache2/apache2.conf
-
 echo "=============================== Copy files ==============================="
 
 cp /var/www/html/bin/magento /root/magento
 cp -r /var/www/html-tmp/* /var/www/html
 cp /root/config.php /var/www/html/app/etc/config.php
+cp /root/magento /var/www/html/bin/magento2
 
 #echo "=============================== php bin/magento cache:flush ==============================="
 #php bin/magento cache:flush
@@ -60,8 +51,36 @@ chmod -R 777 /var/www/html/pub/
 chmod 755 /var/www/html/bin/magento
 chown -R www-data:www-data /var/www/html/
 
-cp /root/magento /var/www/html/bin/magento2
+echo "=============================== Configuring Magento ==============================="
+
+php bin/magento2 setup:store-config:set \
+  --base-url=${MAGENTO_URL} \
+  --base-url-secure=${MAGENTO_SECUREURL} \
+  --language=${MAGENTO_LOCALE} \
+  --currency=${MAGENTO_DEFAULT_CURRENCY} \
+  --timezone=${MAGENTO_TIMEZONE} \
+  --use-rewrites=${MAGENTO_USE_REWRITES} \
+  --use-secure=${MAGENTO_SECURE} \
+  --use-secure-admin=${MAGENTO_SECUREADMIN}
+
+php bin/magento2 admin:user:create \
+  --admin-firstname=${MAGENTO_ADMIN_FIRSTNAME} \
+  --admin-lastname=${MAGENTO_ADMIN_LASTNAME} \
+  --admin-email=${MAGENTO_ADMIN_EMAIL} \
+  --admin-user=${MAGENTO_ADMIN_USERNAME} \
+  --admin-password=${MAGENTO_ADMIN_PASSWORD}
+
+php bin/magento2 setup:config:set \
+  --db-host=${MYSQL_HOST} \
+  --db-name=${MYSQL_DATABASE} \
+  --db-user=${MYSQL_USER} \
+  --db-password=${MYSQL_PASSWORD} \
+  --backend-frontname=${MAGENTO_ADMINURL}
+
 #php bin/magento2 deploy:mode:set developer
+
+echo "=============================== Clear cache ==============================="
+rm -rf var/cache var/generation var/page_cache
 
 echo "-= Starting Apache =-"
 
