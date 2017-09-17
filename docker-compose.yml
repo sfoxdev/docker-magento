@@ -16,7 +16,7 @@ services:
         - MYSQL_HOST=sfoxdev.com
         - MYSQL_USER=magento2
         - MYSQL_PASSWORD=magento2
-        - MYSQL_DATABASE=magento2
+        - MYSQL_DATABASE=magento3
         - MAGENTO_URL=http://sfoxdev.com
         - MAGENTO_SECUREURL=https://sfoxdev.com
         - MAGENTO_LOCALE=en_US

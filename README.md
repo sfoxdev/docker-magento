@@ -43,5 +43,5 @@ docker build -t sfoxdev/magento .
 ```
 
 ```
-docker run -d -v /srv/magento:/var/www/html -p 80:80 --name magento sfoxdev/magento
+docker run -d -v /srv/magento:/var/www/html-tmp -p 80:80 --name magento sfoxdev/magento
 ```
